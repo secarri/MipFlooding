@@ -6,7 +6,7 @@ Python implementation of the "mip flooding" algorithm used in God of War. This a
 
 <p align="center">
 
-  <img src="examples/mip_flood_example.gif" width="450" height="450" alt="Texture before and after the mip flooding">
+  <img src="examples/mip_flood_example.gif" width="300" height="300" alt="Texture before and after the mip flooding">
 
 </p>
 
@@ -30,7 +30,7 @@ import os
 import time
 from pathlib import Path
 
-import image_processing
+from mipflooding import image_processing
 
 main_path = r"C:\Users\Sergi\Desktop\TestFlooding\examples_article"
 output_dir = os.path.join(main_path, "output")
