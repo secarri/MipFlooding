@@ -16,6 +16,7 @@ Python implementation of the "mip flooding" algorithm used in God of War. This a
 ## Prerequisites
 
 -   [Python 3.10](https://www.python.org/downloads/release/python-3100/) or a Digital Content Creation (DCC) application with Python support.
+-   The Pillow Python library. You can install it using 'pip install Pillow'.
 
 ## Installation
 
