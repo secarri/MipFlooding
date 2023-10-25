@@ -30,7 +30,7 @@ import os
 import time
 from pathlib import Path
 
-from MipFlooding import image_processing
+import image_processing
 
 main_path = r"C:\Users\Sergi\Desktop\TestFlooding\examples_article"
 output_dir = os.path.join(main_path, "output")
