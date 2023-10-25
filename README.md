@@ -4,6 +4,10 @@
 
 Python implementation of the "mip flooding" algorithm used in God of War. This algorithm was presented in the 2019 GDC talk and optimizes game textures sizes on disk.
 
+<p align="center">
+  <img src="examples/example.gif" width="150" height="115" alt="Texture before and after the mip flooding">
+</p>
+
 ## Prerequisites
 
 -   [Python 3.10](https://www.python.org/downloads/release/python-3100/) or a Digital Content Creation (DCC) application with Python support.
