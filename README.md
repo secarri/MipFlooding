@@ -5,7 +5,9 @@
 Python implementation of the "mip flooding" algorithm used in God of War. This algorithm was presented in the 2019 GDC talk and optimizes game textures sizes on disk.
 
 <p align="center">
-  <img src="examples/example.gif" width="150" height="115" alt="Texture before and after the mip flooding">
+
+  <img src="examples/example.gif" width="450" height="450" alt="Texture before and after the mip flooding">
+
 </p>
 
 > "This is fast to generate, and it scales well with the image size, because of the logarithmic component to the algorithmic time complexity, and  on disk, this will compress better, because of those large areas of constant color."
@@ -24,7 +26,31 @@ Python implementation of the "mip flooding" algorithm used in God of War. This a
 ## Code sample
 
 ```python
-print("The code will go here!")
+import os
+import time
+from pathlib import Path
+
+import image_processing
+
+main_path = r"C:\Users\Sergi\Desktop\TestFlooding\examples_article"
+output_dir = os.path.join(main_path, "output")
+
+
+def batch_mip_flood(path):
+    files = os.listdir(path)
+    files = [os.path.join(path, file) for file in files if "albedo" in file]
+    for file in files:
+        mask = file.replace("albedo", "opacity")
+        file_name = file.replace("albedo", "albedo_mip_flood")
+        output = os.path.join(output_dir, Path(file_name).name.__str__())
+        image_processing.mip_flooding(file, mask, output)
+
+
+if __name__ == "__main__":
+    start_time = time.perf_counter()
+    batch_mip_flood(main_path)
+    end_time = time.perf_counter()
+    print(f"Elapsed time: {end_time - start_time} sec.")
 ```
 ## Statistics
 
@@ -38,5 +64,11 @@ print("The code will go here!")
 | leafs_4K_albedo.png        | 8.48 MB      | 7.46 MB       | 12.03%             | 3.77s        |
 | purple_flower_4K_albedo.png| 16.98 MB     | 13.54 MB      | 20.25%             | 2.90s        |
 | rocks_4K_albedo.png        | 2.78 MB      | 2.30 MB       | 17.06%             | 2.34s        |
-| **Average**                |              |               | 31.705%            | 2.5s         |
+| **Average**                |              |               | 31.70%            | 2.5s         |
 
+## What's next?
+
+* Support for Packed Textures with Alpha Channel
+* Selective Mip Flooding for Specific Channels
+* Integration of NumPy + PIL
+* Integrate it in a full standalone application. 
