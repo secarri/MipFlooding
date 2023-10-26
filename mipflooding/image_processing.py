@@ -79,7 +79,7 @@ def _calculate_image_height(image_width: int, image: Image) -> int:
 
 
 def _stack_mip_levels(average_bgr: str, miplevels: int, color: Image, origin_width: int, origin_height: int,
-                      output_dir: str, logger: logging.Logger) -> None:
+                      output_dir: str, logger: logging.Logger, resample: Image.Resampling = Image.BOX) -> None:
     """Stack Mipmap levels on a background Image with alpha integration to generate a single Image."""
     stack = average_bgr
     logger.info(f"--- Storing original resolution in memory: {origin_width, origin_height}")
@@ -88,7 +88,7 @@ def _stack_mip_levels(average_bgr: str, miplevels: int, color: Image, origin_wid
         pixel = miplevel + 1
         width = 2 ** pixel
         height = _calculate_image_height(width, color)
-        new_image = color.resize((width, height), Image.NEAREST)
+        new_image = color.resize((width, height), resample)
         to_stack = new_image.copy().resize((origin_width, origin_height), Image.NEAREST)
         img_copy = stack.copy()
         img_copy.paste(to_stack, (0, 0), to_stack)
@@ -128,7 +128,7 @@ def run_mip_flooding(in_texture_color_abs_path: str, in_texture_alpha_abs_path: 
         out_abs_path (str): The absolute path for the output image.
 
     Example:
-        mip_flooding('input_color.png', 'input_alpha.png', 'output_texture.png')
+        run_mip_flooding('input_color.png', 'input_alpha.png', 'output_texture.png')
     """
 
     start_time = time.perf_counter()

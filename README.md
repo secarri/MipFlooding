@@ -56,15 +56,15 @@ if __name__ == "__main__":
 
 | Input                       | Old Size Disk | New Size Disk | Percentage Smaller | Elapsed Time |
 |-----------------------------|---------------|---------------|--------------------|--------------|
-| butterflies_4K_albedo.png   | 9.78 MB       | 6.03 MB       | 38.29%             | 3.13s        |
-| cloth_4K_albedo.png         | 12.64 MB      | 9.89 MB       | 21.77%             | 3.39s        |
-| fern_2K_albedo.png          | 2.31 MB       | 1.07 MB       | 53.68%             | 0.57s        |
-| fern_long_height_albedo.png | 4.79 MB       | 2.14 MB       | 55.30%             | 1.14s        |
-| flowers_4K_albedo.png       | 9.30 MB       | 6.03 MB       | 35.24%             | 3.01s        |
-| leafs_4K_albedo.png         | 8.48 MB       | 7.46 MB       | 12.03%             | 3.77s        |
-| purple_flower_4K_albedo.png | 16.98 MB      | 13.54 MB      | 20.25%             | 2.90s        |
-| rocks_4K_albedo.png         | 2.78 MB       | 2.30 MB       | 17.06%             | 2.34s        |
-| **Average**                 |               |               | 31.70%             | 2.5s         |
+| butterflies_4K_albedo.png   | 9.78 MB       | 6.05 MB       | 38.14%             | 3.13s        |
+| cloth_4K_albedo.png         | 12.64 MB      | 9.92 MB       | 21.50%             | 3.39s        |
+| fern_2K_albedo.png          | 2.31 MB       | 1.08 MB       | 53.14%             | 0.57s        |
+| fern_long_height_albedo.png | 4.79 MB       | 2.18 MB       | 54.54%             | 1.14s        |
+| flowers_4K_albedo.png       | 9.30 MB       | 6.14 MB       | 34.03%             | 3.01s        |
+| leafs_4K_albedo.png         | 8.48 MB       | 7.52 MB       | 11.29%             | 3.77s        |
+| purple_flower_4K_albedo.png | 16.98 MB      | 13.57 MB      | 20.09%             | 2.90s        |
+| rocks_4K_albedo.png         | 2.78 MB       | 2.32 MB       | 16.57%             | 2.34s        |
+| **Average**                 |               |               | 31.16%             | 2.5s         |
 
 ## What's next?
 
