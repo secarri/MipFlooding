@@ -16,10 +16,11 @@ Python implementation of the "mip flooding" algorithm used in God of War. This a
 ## Prerequisites
 
 -   [Python 3.10](https://www.python.org/downloads/release/python-3100/) or a Digital Content Creation (DCC) application with Python support.
+-   The Pillow Python library. You can install it using 'pip install Pillow'.
 
 ## Installation
 
-1. Download [the latest release]([https://github.com/EmbarkStudios/blender-tools/releases/latest](https://github.com/secarri/mip_flooding/releases)) from GitHub!
+1. Download [the latest version from main]((https://github.com/secarri/mip_flooding)) from GitHub!
 2. Place the package in your preferred location (whether within your Python libraries or a custom directory, with the option of using `sys.path.append` or any other approach).
 3. From your preferred DCC package, import the `image_processing` module form the `mipflooding` package.
 
@@ -68,6 +69,7 @@ if __name__ == "__main__":
 
 ## What's next?
 
+* Release a version with its own setup installer. 
 * Support for Packed Textures with Alpha Channel
 * Selective Mip Flooding for Specific Channels
 * Integration of NumPy + PIL
