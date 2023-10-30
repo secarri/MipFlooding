@@ -4,7 +4,7 @@ import math
 import os
 import time
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 # Third party packages
 from PIL import Image
@@ -28,7 +28,8 @@ def _open_image_inputs(color: str, alpha: str, logger: logging.Logger) -> List:
     return [color_map, alpha_mask]
 
 
-def _validate_inputs(color: Image, alpha_mask: Image, logger: logging.Logger, input_texture_color_abs_path: str):
+def _validate_inputs(color: Image, alpha_mask: Image, logger: logging.Logger,
+                     input_texture_color_abs_path: str) -> str | Optional[None]:
     if color is None or alpha_mask is None:
         message = f"One or more inputs do not exist:\n\t-Color: {color}\n\t-Alpha: {alpha_mask}. Skipping..."
     elif not _do_resolutions_match(color, alpha_mask, logger):
@@ -64,7 +65,7 @@ def _get_mip_levels(image: Image, logger: logging.Logger) -> int:
 
 
 def _generate_background(image: Image, logger: logging.Logger) -> Image:
-    """Generate a background image and save it to the output path."""
+    """Generate a background image and returns the result Image object."""
     logger.info("--- Generating background image and storing it in memory...")
     average_image_color = image.resize((1, 1))
     up_scaled_avg = average_image_color.resize(image.size, Image.NEAREST)
@@ -85,8 +86,7 @@ def _stack_mip_levels(average_bgr: str, miplevels: int, color: Image, origin_wid
     logger.info(f"--- Storing original resolution in memory: {origin_width, origin_height}")
     logger.info(f"--- Beginning the stacking process. Please wait...")
     for miplevel in range(miplevels):
-        pixel = miplevel + 1
-        width = 2 ** pixel
+        width = 2 ** (miplevel + 1)
         height = _calculate_image_height(width, color)
         new_image = color.resize((width, height), resample)
         to_stack = new_image.copy().resize((origin_width, origin_height), Image.NEAREST)
@@ -107,11 +107,10 @@ def _log_and_terminate(logger, message, level=logging.ERROR):
 def _make_logger_for_file(directory: str, filename: str) -> logging.Logger:
     """Constructs the full path to a log file, clears the existing log file, and sets up a logger."""
     logs_directory = os.path.join(directory, "logs")
-    if not Path(logs_directory).exists():
-        os.mkdir(logs_directory)
-    out_log_file = os.path.join(logs_directory, f"{filename.split('.')[0]}.txt")
+    Path(logs_directory).mkdir(parents=True, exist_ok=True)
+    out_log_file = Path(os.path.join(logs_directory, f"{filename.split('.')[0]}.txt"))
     clear_log_file(out_log_file)
-    return setup_logger("mipmap_flooding", out_log_file)
+    return setup_logger("mipmap_flooding", out_log_file.__str__())
 
 
 def run_mip_flooding(in_texture_color_abs_path: str, in_texture_alpha_abs_path: str, out_abs_path: str) -> None:

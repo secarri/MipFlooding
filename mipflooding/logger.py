@@ -1,5 +1,21 @@
 # Default packages
+import time
 import logging
+from functools import wraps
+
+
+def log_execution_time(func):
+    """Decorator to log the execution time of a function."""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        logger = kwargs.get('logger')
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        execution_time = end_time - start_time
+        logger.info(f"- Elapsed time of '{func.__name__}': {execution_time:.2f} seconds.")
+        return result
+    return wrapper
 
 
 def setup_logger(logger_name: str, abs_log_path: str) -> logging.Logger:
