@@ -129,7 +129,6 @@ def run_mip_flooding(in_texture_color_abs_path: str, in_texture_alpha_abs_path: 
     Example:
         run_mip_flooding('input_color.png', 'input_alpha.png', 'output_texture.png')
     """
-
     start_time = time.perf_counter()
     out_directory = get_output_directory(out_abs_path)
     out_filename = get_output_filename(out_abs_path)

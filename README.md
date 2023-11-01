@@ -56,22 +56,28 @@ if __name__ == "__main__":
 ```
 ## Statistics
 
+### Single Processing
 | Input                       | Old Size Disk | New Size Disk | Percentage Smaller | Elapsed Time |
 |-----------------------------|---------------|---------------|--------------------|--------------|
-| butterflies_4K_albedo.png   | 9.78 MB       | 6.05 MB       | 38.14%             | 3.13s        |
-| cloth_4K_albedo.png         | 12.64 MB      | 9.92 MB       | 21.50%             | 3.39s        |
-| fern_2K_albedo.png          | 2.31 MB       | 1.08 MB       | 53.14%             | 0.57s        |
-| fern_long_height_albedo.png | 4.79 MB       | 2.18 MB       | 54.54%             | 1.14s        |
-| flowers_4K_albedo.png       | 9.30 MB       | 6.14 MB       | 34.03%             | 3.01s        |
-| leafs_4K_albedo.png         | 8.48 MB       | 7.52 MB       | 11.29%             | 3.77s        |
-| purple_flower_4K_albedo.png | 16.98 MB      | 13.57 MB      | 20.09%             | 2.90s        |
-| rocks_4K_albedo.png         | 2.78 MB       | 2.32 MB       | 16.57%             | 2.34s        |
-| **Average**                 |               |               | 31.16%             | 2.5s         |
+| butterflies_4K_albedo.png   | 9.78 MB       | 6.05 MB       | 38.14%             | 3.13 sec     |
+| cloth_4K_albedo.png         | 12.64 MB      | 9.92 MB       | 21.50%             | 3.39 sec     |
+| fern_2K_albedo.png          | 2.31 MB       | 1.08 MB       | 53.14%             | 0.57 sec     |
+| fern_long_height_albedo.png | 4.79 MB       | 2.18 MB       | 54.54%             | 1.14 sec     |
+| flowers_4K_albedo.png       | 9.30 MB       | 6.14 MB       | 34.03%             | 3.01 sec     |
+| leafs_4K_albedo.png         | 8.48 MB       | 7.52 MB       | 11.29%             | 3.77 sec     |
+| purple_flower_4K_albedo.png | 16.98 MB      | 13.57 MB      | 20.09%             | 2.90 sec     |
+| rocks_4K_albedo.png         | 2.78 MB       | 2.32 MB       | 16.57%             | 2.34 sec     |
+| **Average**                 |               |               | 31.16%             | 2.50 sec     |
+
+### Batch Processing
+
+| Same set of files above | Elapsed Time |
+|-------------------------|--------------|
+| Synchronous calls       | 25.34 sec    |
+| Asynchronous calls      | 5.97 sec     |
 
 ## What's next?
 
 * Release a version with its own setup installer. 
-* Support for Packed Textures with Alpha Channel
-* Selective Mip Flooding for Specific Channels
-* Integration of NumPy + PIL
-* Integrate it in a full standalone application. 
+* Support for Packed Textures with Alpha Channel.
+* Selective Mip Flooding for Specific Channels.
