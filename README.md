@@ -81,6 +81,12 @@ if __name__ == "__main__":
 | Synchronous calls       | 25.34 sec    |
 | Asynchronous calls      | 5.97 sec     |
 
+<p align="center">
+
+  <img src="examples/batch_example.gif" alt="Texture before and after the mip flooding">
+
+</p>
+
 ## What's next?
 
 * Release a version with its own setup installer. 
