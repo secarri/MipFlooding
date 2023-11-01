@@ -83,7 +83,7 @@ if __name__ == "__main__":
 
 <p align="center">
 
-  <img src="examples/batch_example.gif" alt="Texture before and after the mip flooding">
+  <img src="examples/batch_example.gif" width="700" alt="Texture before and after the mip flooding">
 
 </p>
 
