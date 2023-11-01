@@ -2,11 +2,9 @@
 from pathlib import Path
 
 
-def clear_log_file(filepath: str) -> None:
+def clear_log_file(filepath: Path) -> None:
     """Clear the content of the log file at the specified 'filepath' if it exists."""
-    if Path(filepath).exists():
-        with open(filepath, 'w') as f:
-            pass
+    filepath.write_text("", encoding="utf-8")
 
 
 def get_output_directory(filepath: str) -> str | None:

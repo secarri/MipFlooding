@@ -17,7 +17,7 @@ Python implementation of the "mip flooding" algorithm used in God of War. This a
 ## Prerequisites
 
 -   [Python 3.10](https://www.python.org/downloads/release/python-3100/) or a Digital Content Creation (DCC) application with Python support.
--   The Pillow Python library. You can install it using 'pip install Pillow'.
+-   The Pillow Python library. You can install it using `pip install Pillow`.
 
 ## Installation
 
@@ -32,46 +32,63 @@ import os
 import time
 from pathlib import Path
 
-from mipflooding import image_processing
+from mipflooding import batch_processing, image_processing
 
 main_path = r"C:\Users\Sergi\Desktop\TestFlooding\examples_article"
 output_dir = os.path.join(main_path, "output")
 
 
-def batch_mip_flood(path):
+def get_files(path, pattern="_C"):
     files = os.listdir(path)
-    files = [os.path.join(path, file) for file in files if "albedo" in file]
+    return [os.path.join(path, file) for file in files if pattern in file]
+
+
+def batch_mip_flood_slow(files):
     for file in files:
-        mask = file.replace("albedo", "opacity")
-        file_name = file.replace("albedo", "albedo_mip_flood")
+        mask = file.replace("_C", "_A")
+        file_name = file.replace("_C", "_MIPF_C")
         output = os.path.join(output_dir, Path(file_name).name.__str__())
         image_processing.run_mip_flooding(file, mask, output)
 
 
 if __name__ == "__main__":
     start_time = time.perf_counter()
-    batch_mip_flood(main_path)
+    # batch_mip_flood_slow(get_files(main_path))
+    batch_processing.run_batch_mip_flood(get_files(main_path), output_dir)
     end_time = time.perf_counter()
-    print(f"Elapsed time: {end_time - start_time} sec.")
+    print(f"Elapsed time: {end_time - start_time:,.2f} sec.")
+
 ```
 ## Statistics
 
+### Single Processing
 | Input                       | Old Size Disk | New Size Disk | Percentage Smaller | Elapsed Time |
 |-----------------------------|---------------|---------------|--------------------|--------------|
-| butterflies_4K_albedo.png   | 9.78 MB       | 6.05 MB       | 38.14%             | 3.13s        |
-| cloth_4K_albedo.png         | 12.64 MB      | 9.92 MB       | 21.50%             | 3.39s        |
-| fern_2K_albedo.png          | 2.31 MB       | 1.08 MB       | 53.14%             | 0.57s        |
-| fern_long_height_albedo.png | 4.79 MB       | 2.18 MB       | 54.54%             | 1.14s        |
-| flowers_4K_albedo.png       | 9.30 MB       | 6.14 MB       | 34.03%             | 3.01s        |
-| leafs_4K_albedo.png         | 8.48 MB       | 7.52 MB       | 11.29%             | 3.77s        |
-| purple_flower_4K_albedo.png | 16.98 MB      | 13.57 MB      | 20.09%             | 2.90s        |
-| rocks_4K_albedo.png         | 2.78 MB       | 2.32 MB       | 16.57%             | 2.34s        |
-| **Average**                 |               |               | 31.16%             | 2.5s         |
+| butterflies_4K_albedo.png   | 9.78 MB       | 6.05 MB       | 38.14%             | 3.13 sec     |
+| cloth_4K_albedo.png         | 12.64 MB      | 9.92 MB       | 21.50%             | 3.39 sec     |
+| fern_2K_albedo.png          | 2.31 MB       | 1.08 MB       | 53.14%             | 0.57 sec     |
+| fern_long_height_albedo.png | 4.79 MB       | 2.18 MB       | 54.54%             | 1.14 sec     |
+| flowers_4K_albedo.png       | 9.30 MB       | 6.14 MB       | 34.03%             | 3.01 sec     |
+| leafs_4K_albedo.png         | 8.48 MB       | 7.52 MB       | 11.29%             | 3.77 sec     |
+| purple_flower_4K_albedo.png | 16.98 MB      | 13.57 MB      | 20.09%             | 2.90 sec     |
+| rocks_4K_albedo.png         | 2.78 MB       | 2.32 MB       | 16.57%             | 2.34 sec     |
+| **Average**                 |               |               | 31.16%             | 2.50 sec     |
+
+### Batch Processing
+
+| Same set of files above | Elapsed Time |
+|-------------------------|--------------|
+| Synchronous calls       | 25.34 sec    |
+| Asynchronous calls      | 5.97 sec     |
+
+<p align="center">
+
+  <img src="examples/batch_example.gif" width="700" alt="Texture before and after the mip flooding">
+
+</p>
 
 ## What's next?
 
 * Release a version with its own setup installer. 
-* Support for Packed Textures with Alpha Channel
-* Selective Mip Flooding for Specific Channels
-* Integration of NumPy + PIL
-* Integrate it in a full standalone application. 
+* Support for Packed Textures with Alpha Channel.
+* Selective Mip Flooding for Specific Channels.
