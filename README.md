@@ -17,7 +17,7 @@ Python implementation of the "mip flooding" algorithm used in God of War. This a
 ## Prerequisites
 
 -   [Python 3.10](https://www.python.org/downloads/release/python-3100/) or a Digital Content Creation (DCC) application with Python support.
--   The Pillow Python library. You can install it using 'pip install Pillow'.
+-   The Pillow Python library. You can install it using `pip install Pillow`.
 
 ## Installation
 
@@ -32,27 +32,32 @@ import os
 import time
 from pathlib import Path
 
-from mipflooding import image_processing
+from mipflooding import batch_processing, image_processing
 
 main_path = r"C:\Users\Sergi\Desktop\TestFlooding\examples_article"
 output_dir = os.path.join(main_path, "output")
 
 
-def batch_mip_flood(path):
+def get_files(path, pattern="_C"):
     files = os.listdir(path)
-    files = [os.path.join(path, file) for file in files if "albedo" in file]
+    return [os.path.join(path, file) for file in files if pattern in file]
+
+
+def batch_mip_flood_slow(files):
     for file in files:
-        mask = file.replace("albedo", "opacity")
-        file_name = file.replace("albedo", "albedo_mip_flood")
+        mask = file.replace("_C", "_A")
+        file_name = file.replace("_C", "_MIPF_C")
         output = os.path.join(output_dir, Path(file_name).name.__str__())
         image_processing.run_mip_flooding(file, mask, output)
 
 
 if __name__ == "__main__":
     start_time = time.perf_counter()
-    batch_mip_flood(main_path)
+    # batch_mip_flood_slow(get_files(main_path))
+    batch_processing.run_batch_mip_flood(get_files(main_path), output_dir)
     end_time = time.perf_counter()
-    print(f"Elapsed time: {end_time - start_time} sec.")
+    print(f"Elapsed time: {end_time - start_time:,.2f} sec.")
+
 ```
 ## Statistics
 
