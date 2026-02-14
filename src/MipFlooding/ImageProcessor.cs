@@ -10,13 +10,21 @@ namespace ImageProcessingLibrary
     {
         public static int GetMipLevels(int imageWidth, int imageHeight)
         {
-            // Determine the shortest side of the image
-            int imageShortSide = Math.Min(imageWidth, imageHeight);
+            int shortSide = Math.Min(imageWidth, imageHeight);
+            if (shortSide <= 1)
+                return 0;
 
-            // Calculate mip map levels
-            int mipLevels = (int)Math.Round(Math.Log(imageShortSide, 2));
+            // Exact integer bit-shift count — avoids floating-point precision
+            // issues that Math.Log can introduce for large power-of-two sizes.
+            int levels = 0;
+            int s = shortSide;
+            while (s > 1)
+            {
+                s >>= 1;
+                levels++;
+            }
 
-            return mipLevels;
+            return levels;
         }
 
         public static int CalculateImageHeight(int imageWidth, Bitmap image)
@@ -47,6 +55,14 @@ namespace ImageProcessingLibrary
         {
             int width = inputBitmap.Width;
             int height = inputBitmap.Height;
+
+            if (maskBitmap.Width != width || maskBitmap.Height != height)
+            {
+                throw new ArgumentException(
+                    $"Input ({width}x{height}) and mask ({maskBitmap.Width}x{maskBitmap.Height}) must have the same dimensions.",
+                    nameof(maskBitmap));
+            }
+
             int pixelCount = 0;
             long sumR = 0, sumG = 0, sumB = 0;
 

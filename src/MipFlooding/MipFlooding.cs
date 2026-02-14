@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -10,7 +9,7 @@ namespace ImageProcessingLibrary
 {
     public class MipFlooding
     {
-        private static Bitmap StackMipLevels(Bitmap background, int mipLevels, Bitmap color, Bitmap alpha, int originalWidth, int originalHeight, Logger logger, bool reCompositeMip0OnTop = true)
+        private static void StackMipLevels(Bitmap background, int mipLevels, Bitmap color, Bitmap alpha, int originalWidth, int originalHeight, Logger logger, bool reCompositeMip0OnTop = true)
         {
             // This takes 60% of the time, maybe it can be optimized even more. 
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -25,8 +24,13 @@ namespace ImageProcessingLibrary
                     int tempWidth = (int)Math.Pow(2, mipLevel + 1);
                     int tempHeight = ImageProcessor.CalculateImageHeight(tempWidth, color);
 
-                    using (Bitmap resizedColor = ImageProcessor.ResizeImage(maskedColor, originalWidth / tempWidth, originalHeight / tempHeight, System.Drawing.Drawing2D.InterpolationMode.Bilinear))
-                    using (Bitmap resizedAlpha = ImageProcessor.ResizeImage(alpha, originalWidth / tempWidth, originalHeight / tempHeight, System.Drawing.Drawing2D.InterpolationMode.Bilinear))
+                    int resW = originalWidth / tempWidth;
+                    int resH = originalHeight / tempHeight;
+                    if (resW < 1 || resH < 1)
+                        continue;
+
+                    using (Bitmap resizedColor = ImageProcessor.ResizeImage(maskedColor, resW, resH, System.Drawing.Drawing2D.InterpolationMode.Bilinear))
+                    using (Bitmap resizedAlpha = ImageProcessor.ResizeImage(alpha, resW, resH, System.Drawing.Drawing2D.InterpolationMode.Bilinear))
                     using (Bitmap normalizedColor = ImageProcessor.NormalizeColor(resizedColor, resizedAlpha))
                     using (Bitmap combinedColor = ImageProcessor.CombineColorAndAlpha(normalizedColor, resizedAlpha))
                     using (Bitmap colorToStack = ImageProcessor.ResizeImage(combinedColor, originalWidth, originalHeight, System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor))
@@ -58,8 +62,6 @@ namespace ImageProcessingLibrary
             stopwatch.Stop();
             TimeSpan elapsedTime = stopwatch.Elapsed;
             logger.LogInfo($"--- StackMipLevels Time: {elapsedTime.TotalSeconds:F6} seconds.");
-            
-            return background;
         }
 
         public static void RunMipFlooding(string inTexColorAbsPath, string inTexAlphaAbsPath, string outAbsPath, string format, bool reCompositeMip0OnTop = true)
@@ -103,7 +105,8 @@ namespace ImageProcessingLibrary
                 {
                     // Run stacking process
                     logger.LogInfo("--- Starting 'Stacking' process...");
-                    StackMipLevels(background_img, getMipLevels, color, alpha, colorWidth, colorHeight, logger, reCompositeMip0OnTop).Save(outAbsPath, outFormat);
+                    StackMipLevels(background_img, getMipLevels, color, alpha, colorWidth, colorHeight, logger, reCompositeMip0OnTop);
+                    background_img.Save(outAbsPath, outFormat);
                 }
             }
 
