@@ -77,25 +77,26 @@ if __name__ == "__main__":
 ```
 ## Statistics
 
+> *Last updated: 2026-02-14*
+
+> **Note:** These statistics were generated on a Windows 11 machine (Intel Core i7-13700K, 32GB RAM). Benchmarks are automatically updated with each change, so the values below may differ from the examples shown in the GIFs. Test images are sourced from [Poly Haven](https://polyhaven.com/models/nature) and [Fab](https://www.fab.com/sellers/Quixel%20Megascans).
+
 ### Single Processing
 | Input                       | Old Size Disk | New Size Disk | Percentage Smaller | Elapsed Time |
 |-----------------------------|---------------|---------------|--------------------|--------------|
-| butterflies_4K_albedo.png   | 9.78 MB       | 6.05 MB       | 38.14%             | 3.13 sec     |
-| cloth_4K_albedo.png         | 12.64 MB      | 9.92 MB       | 21.50%             | 3.39 sec     |
-| fern_2K_albedo.png          | 2.31 MB       | 1.08 MB       | 53.14%             | 0.57 sec     |
-| fern_long_height_albedo.png | 4.79 MB       | 2.18 MB       | 54.54%             | 1.14 sec     |
-| flowers_4K_albedo.png       | 9.30 MB       | 6.14 MB       | 34.03%             | 3.01 sec     |
-| leafs_4K_albedo.png         | 8.48 MB       | 7.52 MB       | 11.29%             | 3.77 sec     |
-| purple_flower_4K_albedo.png | 16.98 MB      | 13.57 MB      | 20.09%             | 2.90 sec     |
-| rocks_4K_albedo.png         | 2.78 MB       | 2.32 MB       | 16.57%             | 2.34 sec     |
-| **Average**                 |               |               | 31.16%             | 2.50 sec     |
+| T_Chair_C.PNG | 2.52 MB | 1.77 MB | 29.86% | 0.61 sec |
+| T_butterflies_C.png | 10.26 MB | 9.89 MB | 3.66% | 2.26 sec |
+| T_fern_C.jpg | 1.97 MB | 1.46 MB | 25.90% | 2.33 sec |
+| T_peri_C.png | 52.18 MB | 12.69 MB | 75.67% | 3.01 sec |
+| T_potted_C.png | 59.03 MB | 28.72 MB | 51.35% | 3.14 sec |
+| **Average** | | | 37.29% | 2.27 sec |
 
 ### Batch Processing
 
 | Same set of files above | Elapsed Time |
 |-------------------------|--------------|
-| Synchronous calls       | 25.34 sec    |
-| Asynchronous calls      | 5.97 sec     |
+| Synchronous calls       | 12.34 sec    |
+| Asynchronous calls      | 8.85 sec     |
 
 <p align="center">
 
