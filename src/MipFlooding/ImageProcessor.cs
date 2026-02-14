@@ -43,43 +43,57 @@ namespace ImageProcessingLibrary
             return resizedImage;
         }
 
-        public static Bitmap GenerateAverageColorImage(Bitmap inputBitmap)
+        public static Bitmap GenerateAverageColorImage(Bitmap inputBitmap, Bitmap maskBitmap)
         {
             int width = inputBitmap.Width;
             int height = inputBitmap.Height;
             int pixelCount = 0;
             long sumR = 0, sumG = 0, sumB = 0;
 
-            BitmapData bmpData = inputBitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            BitmapData bmpData = inputBitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            BitmapData maskData = maskBitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
             unsafe
             {
-                byte* ptr = (byte*)bmpData.Scan0;
+                byte* colorPtr = (byte*)bmpData.Scan0;
+                byte* maskPtr = (byte*)maskData.Scan0;
 
                 for (int y = 0; y < height; y++)
                 {
                     for (int x = 0; x < width; x++)
                     {
-                        byte b = ptr[y * bmpData.Stride + x * 3];
-                        byte g = ptr[y * bmpData.Stride + x * 3 + 1];
-                        byte r = ptr[y * bmpData.Stride + x * 3 + 2];
+                        int colorIndex = y * bmpData.Stride + x * 4;
+                        int maskIndex = y * maskData.Stride + x * 4;
 
-                        if (r != 0 || g != 0 || b != 0)
-                        {
-                            sumR += r;
-                            sumG += g;
-                            sumB += b;
-                            pixelCount++;
-                        }
+                        // Use the mask to determine if the pixel is visible
+                        byte maskValue = maskPtr[maskIndex];
+                        if (maskValue == 0)
+                            continue;
+
+                        byte b = colorPtr[colorIndex];
+                        byte g = colorPtr[colorIndex + 1];
+                        byte r = colorPtr[colorIndex + 2];
+
+                        sumR += r;
+                        sumG += g;
+                        sumB += b;
+                        pixelCount++;
                     }
                 }
             }
 
             inputBitmap.UnlockBits(bmpData);
+            maskBitmap.UnlockBits(maskData);
 
             if (pixelCount == 0)
             {
-                return new Bitmap(1, 1); // Return a single black pixel if all pixels are black
+                // Return a full-size black bitmap when every pixel is masked out
+                Bitmap fallback = new Bitmap(width, height);
+                using (Graphics gfx = Graphics.FromImage(fallback))
+                {
+                    gfx.Clear(Color.Black);
+                }
+                return fallback;
             }
 
             int avgR = (int)(sumR / pixelCount);
@@ -140,9 +154,9 @@ namespace ImageProcessingLibrary
 
                         // Apply the alpha mask to the color pixel
                         resultRow[resultIndex + 3] = 255; // Alpha channel
-                        resultRow[resultIndex + 2] = (byte)((colorR * alphaA) >> 8); // Equivalent to division by 255
-                        resultRow[resultIndex + 1] = (byte)((colorG * alphaA) >> 8);
-                        resultRow[resultIndex + 0] = (byte)((colorB * alphaA) >> 8);
+                        resultRow[resultIndex + 2] = (byte)((colorR * alphaA + 127) / 255);
+                        resultRow[resultIndex + 1] = (byte)((colorG * alphaA + 127) / 255);
+                        resultRow[resultIndex + 0] = (byte)((colorB * alphaA + 127) / 255);
                     }
                 });
             }

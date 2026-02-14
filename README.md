@@ -39,13 +39,13 @@ from mipflooding.wrapper import batch_processing
 
 # Variables for single thread test
 wrapper_path = Path(__file__).parent
-color = wrapper_path / Path("src\\MipFlooding\\tests\\book_debri_tall_C.png")
-mask = wrapper_path / Path("src\\MipFlooding\\tests\\book_debri_tall_A.png")
-out = wrapper_path / Path("src\\MipFlooding\\tests\\outs\\output_bug.png")
+color = wrapper_path / "src" / "MipFlooding" / "tests" / "book_debri_tall_C.png"
+mask = wrapper_path / "src" / "MipFlooding" / "tests" / "book_debri_tall_A.png"
+out = wrapper_path / "src" / "MipFlooding" / "tests" / "outs" / "output_bug.png"
 
 # Variables for multi thread test
-directory = wrapper_path / Path("src\\MipFlooding\\tests")
-output_dir = wrapper_path / Path("src\\MipFlooding\\tests\\outs")
+directory = wrapper_path / "src" / "MipFlooding" / "tests"
+output_dir = wrapper_path / "src" / "MipFlooding" / "tests" / "outs"
 
 
 def get_files(path, pattern="_C"):
