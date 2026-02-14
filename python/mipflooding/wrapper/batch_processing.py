@@ -16,7 +16,8 @@ def _match_mask(image_path: str, color_name_pattern: str, mask_name_pattern: str
 
 def _mip_flooding_task(file: str, mask: str, output: str) -> None:
     """Run the mip flooding algorithm on a single file."""
-    image_processing.run_mip_flooding(file, mask, output)
+    img_fmt = Path(output).suffix.lstrip(".").lower()
+    image_processing.run_mip_flooding(file, mask, output, img_format=img_fmt)
 
 
 def run_batch_mip_flood(
