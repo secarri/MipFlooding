@@ -106,7 +106,24 @@ namespace ImageProcessingLibrary
                     // Run stacking process
                     logger.LogInfo("--- Starting 'Stacking' process...");
                     StackMipLevels(background_img, getMipLevels, color, alpha, colorWidth, colorHeight, logger, reCompositeMip0OnTop);
-                    background_img.Save(outAbsPath, outFormat);
+
+                    // Check if input had alpha channel
+                    if (IsFormatWithAlpha(color.PixelFormat))
+                    {
+                        background_img.Save(outAbsPath, outFormat);
+                    }
+                    else
+                    {
+                        // If input didn't have alpha, strip it from output to maintain original format properties
+                        logger.LogInfo($"--- Converting output to {color.PixelFormat} to match input format...");
+                        
+                        // Create a clone with the target format
+                        Rectangle rect = new Rectangle(0, 0, background_img.Width, background_img.Height);
+                        using (Bitmap converted = background_img.Clone(rect, color.PixelFormat))
+                        {
+                            converted.Save(outAbsPath, outFormat);
+                        }
+                    }
                 }
             }
 
@@ -134,6 +151,14 @@ namespace ImageProcessingLibrary
             }
 
             logger.LogInfo($"--- Mip Flooding Time: {elapsedTime.TotalSeconds:F6} seconds.");
+        }
+        private static bool IsFormatWithAlpha(PixelFormat format)
+        {
+            return format == PixelFormat.Format32bppArgb || 
+                   format == PixelFormat.Format64bppArgb || 
+                   format == PixelFormat.Format16bppArgb1555 || 
+                   format == PixelFormat.Format32bppPArgb ||
+                   format == PixelFormat.Format64bppPArgb;
         }
     }
 }
